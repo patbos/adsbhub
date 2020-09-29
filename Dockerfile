@@ -11,7 +11,7 @@ RUN go mod download
 COPY . .
 
 # Build the binary
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o /go/bin/adsbhub
+RUN CGO_ENABLED=0 go build -a -installsuffix cgo -o /go/bin/adsbhub
 
 FROM scratch
 COPY --from=build-env /go/bin/adsbhub /adsbhub

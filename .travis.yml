@@ -1,0 +1,17 @@
+dist: xenial
+sudo: required
+env:
+  global:
+  - DOCKER_REPO=patbos/adsbhub
+  - DOCKER_USER=patbos
+  - secure: AScreaTSJ6XuA8P3Omay/aFvp6lRRF4pCVgYMxJktbngEqltET8yZGBZ+Dj1E2jkrrVHXS3dZ+/fLOpnlNM9CCJ63MOfyufdlnJ/wO+b+c9iDi6OXpaN6eAgdOS41726xd2nN7cn1RNl13orFTAn4QdiSu5T9XZbK4e9IDNrLYvHA1NPW6qjgwUsFNntU2BCccYJGHwdUv+DgFSt3fhqOTkxDRwoA9RLQausxk8HXqDqDRHwA4KhbIZ2rsDypG8YBNTSgCkUQKGBgdqHxWp/H59IJhiT9xNJDODg93b92nqDcEA+y5DFQHuVbE4cV441SC6Epi/AF+129dS9YL4DgJOfQuHmMm5UMh4Met5GnDg6+JivzL5YaCIGN5jshvCF47fK5ufJdXKu2goP9J3Qt7mUAX8oJE6Odq25Mmio9XfTLt3BqeWfsW5So3kwmGcM+GoyL8o4PcI8gHBtT2mD/7OhcW/JgRvJMnhTREu5uZh/Gn7j84jlFIYEoItfpvzS9VjhuUCAFAYo1JyvkLn5bc2deHqNVyDNo8DhdEtq0M50oBRGY+EXXZng2a+ho4mBvieJ3/cXEiOdc1PikWNgFvG3xDt/0QLtM+aYXC8YgdXOnqAGiLvktXXct7x8kMa0LNnAVUv1HPCYjpuq7dMKSwnEYozUJ1hocbHbHU4MQZQ=
+before_install:
+- curl -fsSL https://get.docker.com | sh
+- echo '{"experimental":"enabled"}' | sudo tee /etc/docker/daemon.json
+- mkdir -p $HOME/.docker
+- echo '{"experimental":"enabled"}' | sudo tee $HOME/.docker/config.json
+- sudo service docker start
+install:
+- docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+- docker buildx create --name xbuilder --use
+script: bash ci.sh
