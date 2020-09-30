@@ -15,4 +15,8 @@ RUN CGO_ENABLED=0 go build -a -installsuffix cgo -o /go/bin/adsbhub
 
 FROM scratch
 COPY --from=build-env /go/bin/adsbhub /adsbhub
+
+COPY --from=build-env /usr/share/zoneinfo /usr/share/zoneinfo
+ENV TZ=Europe/Stockholm
+
 ENTRYPOINT ["/adsbhub"]
