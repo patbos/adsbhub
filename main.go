@@ -38,7 +38,9 @@ func sender(host string, port int, messages chan string) {
 				_, writeErr := writer.WriteString(message + "\n")
 				flushErr := writer.Flush()
 				if writeErr == nil && flushErr == nil {
-					messagesSent.Inc()
+					if message != "" {
+						messagesSent.Inc()
+					}
 				} else {
 					messages <- message
 					log.Printf("Could not send message! %v %v", writeErr, flushErr)
@@ -68,11 +70,9 @@ func receiver(host string, port int, messages chan string) {
 				receivedMessage, readErr := reader.ReadString('\n')
 				if readErr == nil {
 					message := strings.TrimSpace(receivedMessage)
+					messages <- message
 					if message != "" {
-						messages <- message
 						messagesReceived.Inc()
-					} else {
-						log.Print("Empty message received")
 					}
 				} else {
 					break
