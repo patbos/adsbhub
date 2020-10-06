@@ -1,5 +1,10 @@
 #!/bin/bash
 
+echo "Environment:"
+echo "----------------------------"
+env
+echo "----------------------------"
+
 if [ "$TRAVIS_PULL_REQUEST" = "true" ] || [ "$TRAVIS_BRANCH" != "master" ]; then
   docker buildx build \
     --progress plain \
